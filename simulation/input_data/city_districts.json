@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "name": "Stare Miasto",
+        "safety_factor": 70
+    },
+    {
+        "id": 2,
+        "name": "Grzegórzki",
+        "safety_factor": 20
+    },
+    {
+        "id": 3,
+        "name": "Prądnik Czerwony",
+        "safety_factor": 65
+    },
+    {
+        "id": 4,
+        "name": "Prądnik Biały",
+        "safety_factor": 55
+    },
+    {
+        "id": 5,
+        "name": "Krowodrza",
+        "safety_factor": 90
+    },
+    {
+        "id": 6,
+        "name": "Bronowice",
+        "safety_factor": 80
+    },
+    {
+        "id": 7,
+        "name": "Zwierzyniec",
+        "safety_factor": 95
+    },
+    {
+        "id": 8,
+        "name": "Dębniki",
+        "safety_factor": 75
+    },
+    {
+        "id": 9,
+        "name": "Łagiewniki-Borek Fałęcki",
+        "safety_factor": 15
+    },
+    {
+        "id": 10,
+        "name": "Swoszowice",
+        "safety_factor": 90
+    },
+    {
+        "id": 11,
+        "name": "Podgórze Duchackie",
+        "safety_factor": 15
+    },
+    {
+        "id": 12,
+        "name": "Bieżanów-Prokocim",
+        "safety_factor": 10
+    },
+    {
+        "id": 13,
+        "name": "Podgórze",
+        "safety_factor": 50
+    },
+    {
+        "id": 14,
+        "name": "Czyżyny",
+        "safety_factor": 65
+    },
+    {
+        "id": 15,
+        "name": "Mistrzejowice",
+        "safety_factor": 75
+    },
+    {
+        "id": 16,
+        "name": "Bieńczyce",
+        "safety_factor": 45
+    },
+    {
+        "id": 17,
+        "name": "Wzgórza Krzesławickie",
+        "safety_factor": 40
+    },
+    {
+        "id": 18,
+        "name": "Nowa Huta",
+        "safety_factor": 60
+    }
+]
