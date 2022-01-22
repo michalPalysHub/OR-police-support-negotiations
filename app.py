@@ -31,7 +31,7 @@ with col2:
 # Simulation Duration in hours
 col1, col2 = st.columns(2)
 with col1:
-    duration = st.slider('Duration of the simulation (min. 1h, max. 168h - one week)', min_value=1, max_value=168, value=12, step=1)
+    duration = st.slider('Duration of the simulation (min. 1h, max. 168h - one week)', min_value=1, max_value=168, value=24, step=1)
     st.write('**Duration**: ', "{hrs} hours = {days:.2f} day(s)".format(hrs = duration, days = duration/24))
 
 # Simulation Time Step Duration in hours
@@ -42,7 +42,7 @@ with col2:
 # Initial number of Police Patrols
 col1, col2 = st.columns(2)
 with col1:
-    nr_of_police_partols = st.number_input("Initial number of Police Patrols", 1, 100, 50)
+    nr_of_police_partols = st.number_input("Initial number of Police Patrols", 1, 200, 100)
 
 # Initial number of Antiterrorist Squads
 with col2:
@@ -54,7 +54,6 @@ if simulation_run == True:
     simulation = Simulation(hour, date, duration, time_step, nr_of_police_partols, nr_of_at_squads)
     result = simulation.run()
     st.write(result)
-
 
 
 
@@ -71,19 +70,10 @@ if simulation_run == True:
 #     st.map(df)
 
 """ 
-### Do zrobienia
-
-W klasie Simulation:
- - generujemy określoną liczbę policjantów na terenie całego miasta (zamiast po współrzędnych i zaznaczania na mapie tych 
- miejsc strzelanin losujemy dzielnicę z listy wszystkich dzielnic które są w JSONie, które mają przyporządkowane stopnie bezpieczeństwa)
- - z określoną częstotliwością kroków czasowych z zadanym prawdopodobieństwem (te prawdopodobieństwa hard-coduje, potem ew podawanie ze strony) 
- dzieją się interwencje i dalej strzelaniny
- - w momencie wybuchu strzelaniny dokonujemy NEGOCJACJI - każda taka NEGOCJACJA jest logowana do osobnego pliczku .csv, poza tym generowany jest osobny 
- .csv z podsumowaniem (zamiast wyświetlania tego na mapie - EWENTUALNIE wyświetlać takie statystyki zbiorcze dla każdej dzielnicy na mapie)
-
-Flow całej aplikacji
- 1. app.py
- 2. main.py (w klasie Simulation wykonujemy w pętli kolejne kroki czasowe, zapisujemy stan końcowy po zakończeniu symulacji) -> 
- 3. MC komunikuje się z wewnętrznymi PP i AS i wewnątrz nimi dyryguje (tak jakby odpowiednik Board w ForestFire)
+### Do zrobienia - zapisywać do pliku .csv informacje:
+ - ile było negocjacji agentów w trakcie doby
+ - jedne negocjacje wyglądały tak, drugie tak, trzecie siak
+ 
+ i ew. wykres generować
 """
 
