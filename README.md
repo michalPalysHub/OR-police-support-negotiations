@@ -1,6 +1,4 @@
-# OR-police-support-negotiations
-
-Final project for Distributed Computations (Obliczenia Rozpowszechnione) classes.
+## Final project for Distributed Computations (Obliczenia Rozpowszechnione) classes
 
 Description:
 ...
