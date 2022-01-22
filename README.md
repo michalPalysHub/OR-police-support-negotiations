@@ -1,4 +1,4 @@
-## Final project for Distributed Computations (Obliczenia Rozpowszechnione) classes
+## Final project for "Obliczenia Rozpowszechnione" classes
 
 Description:
 ...
