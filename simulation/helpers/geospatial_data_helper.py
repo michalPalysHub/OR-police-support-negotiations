@@ -72,14 +72,3 @@ class GeospatialDataHelper:
 
         return points_gdf_proj[~neighbours.is_empty]
         
-
-    # ===================
-    # Example usage:
-    #
-    # points = random_points_in_polygon(65, gdf.iloc[3].geometry)
-    # points += random_points_in_polygon(35, gdf.iloc[12].geometry)
-    # points += random_points_in_polygon(35, gdf.iloc[9].geometry)
-    # points_conv = []
-    # for i, point in enumerate(points):
-    #     points_conv.append([point.x, point.y])
-    # st.map(pd.DataFrame(points_conv, columns=['lon', 'lat']))

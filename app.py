@@ -1,8 +1,5 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 
-from simulation.agents import PolicePatrol, AntiTerroristSquad, ManagementCenter
 from simulation.main import Simulation
 
 
@@ -53,27 +50,16 @@ simulation_run = st.button("Start the simulation")
 if simulation_run == True:
     simulation = Simulation(hour, date, duration, time_step, nr_of_police_partols, nr_of_at_squads)
     result = simulation.run()
+
+    st.write("""
+    ***
+    ### Simulation results
+
+    Detailed stats containing information about all the agent negotiations that took place during the simulation.
+    """)
     st.write(result)
 
-
-
-# TODO: zamiast pokazywania mapy pokazywać modal z podsumowaniem, albo printować póki co podsumowanie, potem ew. dorobić wyświetlanie tych statystyk na mapie
-# if simulation_run == True:
-#     st.write("""
-#     ***
-#     ### Simulation results 
-#     The map below presents all the shooting occurances with all the information regarding number of Police Patrols and Antiterrorist Squads involved, 
-#     """)
-#     df = pd.DataFrame(
-#         np.random.randn(50, 2) / [100, 50] + [50.07, 19.95],
-#         columns=['lat', 'lon'])
-#     st.map(df)
-
-""" 
-### Do zrobienia - zapisywać do pliku .csv informacje:
- - ile było negocjacji agentów w trakcie doby
- - jedne negocjacje wyglądały tak, drugie tak, trzecie siak
- 
- i ew. wykres generować
-"""
-
+    st.write("""
+    The map below presents all the shooting location that occured during the simulation.
+    """)
+    st.map(result)

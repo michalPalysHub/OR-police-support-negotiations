@@ -1,4 +1,3 @@
-from datetime import datetime
 import os
 import pandas as pd
 
@@ -19,17 +18,12 @@ class CsvLogger:
         log_file_path = os.path.join(self.output_logs_dir_path, log_file_name)
 
         # Log data to .csv
-        # TODO: przerobić tak, by obslugiwało listę tupli: (current_time, shooting_stats)
-        print("data logged")
-        #df = pd.DataFrame(agent_negotiations_stats, columns=[])
-        #df.to_csv(log_file_path)
-
-        # 3. usuwamy agentów biorących udział w strzelaninie, dodajemy nowych i zwracamy staty
-        # 3.1 data
-        # 3.1.1 dzień tygodnia
-        # 3.2 godzina
-        # 3.3 wsp. bezpieczenstwa dzielnicy
-        # 3.4 czas słuzby
-        # 3.5 _ ilość wymaganego wsparcia
-        # 3.6 _ ew. info o zwiększonym promieniu poszukiwań
-        # 3.7 _ ew. info o zaangażowanych AS
+        columns = ['simulation_time_step', 'day_of_the_week', 'lon', 'lat', 'safety_factor', 'time_on_duty', 'no_of_support_needed', '1st negotiations', 'radius', 'no_of_anti_terrorist_squads', '2nd negotiations']
+        stats_df_arr = []
+        for stats in agent_negotiations_stats:
+            stats_df = pd.DataFrame(stats[1], columns=columns[1:])
+            stats_df.insert(0, columns[0], stats[0])
+            stats_df_arr.append(stats_df)
+        stats_df_combined = pd.concat(stats_df_arr)
+        stats_df_combined.to_csv(log_file_path, index=False)
+        return stats_df_combined

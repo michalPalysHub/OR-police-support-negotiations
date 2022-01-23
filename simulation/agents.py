@@ -3,6 +3,7 @@ import random
 import datetime
 import math
 import pandas as pd
+import uuid
 
 from .helpers.geospatial_data_helper import GeospatialDataHelper
 
@@ -14,6 +15,7 @@ class PolicePatrolState(Enum):
 
 class PolicePatrol:
     def __init__(self, lon, lat, district_safety):
+        self.id = uuid.uuid4()
         self.name = "PP"
 
         # state of the patrol
@@ -39,6 +41,7 @@ class PolicePatrol:
 
     def to_dict(self):
         return {
+            'id': self.id,
             'lon': self.lon,
             'lat': self.lat,
             'time_on_duty': self.time_on_duty,
@@ -104,7 +107,7 @@ class ManagementCenter:
         day_of_the_week = shooting_datetime.weekday()
         time_on_duty = pp.time_on_duty
 
-        shooting_stats = [shooting_datetime.date(), day_of_the_week, hour, district_safety_factor, time_on_duty]
+        shooting_stats = [shooting_datetime.strftime("%A"), pp.lon, pp.lat, district_safety_factor, time_on_duty]
 
         # BD
         if 1 <= district_safety_factor <= 24:
@@ -129,9 +132,9 @@ class ManagementCenter:
             PD = 1
 
         # DT
-        if 1 <= day_of_the_week <= 4:
+        if 0 <= day_of_the_week <= 3:
             DT = 1
-        elif day_of_the_week == 5:
+        elif day_of_the_week == 4:
             DT = 1.25
         else:
             DT = 1.5
@@ -145,14 +148,14 @@ class ManagementCenter:
             CzS = 1.15
 
         # number_of_police_reinforcement = Y = BD * PD * DT * CzS
-        Y = 2 * math.ceil(BD * PD * DT * CzS)
+        Y = math.ceil(2 * BD * PD * DT * CzS)
         shooting_stats.append(Y)
 
         # check if there is enough PP agents in PATROLLNG state in range r0 to participate in shooting
         all_PPs_df = self.get_police_patrols_as_dataframe()
         PP_df = self.get_police_patrol_as_dataframe(pp)
-        PP_in_range = self.geospatial_helper.get_all_points_in_radius(all_PPs_df, PP_df, self.r0)
-        if len(PP_in_range.index) >= Y:
+        PPs_in_range = self.geospatial_helper.get_all_points_in_radius(all_PPs_df, PP_df, self.r0)
+        if len(PPs_in_range.index) >= Y:
             shooting_stats.extend(["satisfied", self.r0, 0, "-"])
         else:
 
@@ -178,16 +181,26 @@ class ManagementCenter:
             r1 = k * self.r0
 
             # check, support PP demand has been satisified
-            PP_in_range = self.geospatial_helper.get_all_points_in_radius(all_PPs_df, PP_df, r1)
+            PPs_in_range = self.geospatial_helper.get_all_points_in_radius(all_PPs_df, PP_df, r1)
             satisfied = "unsatisfied"
-            if len(PP_in_range.index) >= Y:
+            if len(PPs_in_range.index) >= Y:
                 satisfied = "satisfied"
             shooting_stats.extend(["unsatisfied", r1, anti_terrorist_squads_involved, satisfied])
+
+        # removing all the involved PPs and mobilizing new ones on their place
+        ids_to_delete = PPs_in_range['id'].values.tolist()
+        PPs_to_delete = [pp for pp in self.police_patrols if pp.id in ids_to_delete]
+        for pp in PPs_to_delete:
+            self.police_patrols.remove(pp)
+            district_id = random.randint(0, 17)
+            position = self.geospatial_helper.generate_random_points_in_polygon(1, self.city_districts_data.iloc[district_id].geometry)[0]
+            safety_factor = self.city_districts_data.iloc[district_id].safety_factor
+            self.police_patrols.append(PolicePatrol(position.x, position.y, safety_factor))
 
         return shooting_stats
         
 
-    def update_police_patrols_state(self, shooting_datetime):
+    def update_police_patrols_state(self, datetime_current):
         shootings = []
         for pp in self.police_patrols:
 
@@ -201,7 +214,7 @@ class ManagementCenter:
 
                 # change Police Patrol state to SHOOTING with given probability
                 if random.random() < self.change_state_to_shooting_prob:
-                    shooting_stats = self.handle_shooting(pp, shooting_datetime)
+                    shooting_stats = self.handle_shooting(pp, datetime_current)
                     shootings.append(shooting_stats)
 
                 else:

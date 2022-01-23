@@ -32,7 +32,6 @@ class Simulation:
         # geospatial and safety factor data of city districts combined
         self.city_districts_data = None
         
-
     def run(self):
 
         warnings.filterwarnings("ignore")
@@ -60,6 +59,4 @@ class Simulation:
             # next time step
             self.datetime_current += datetime.timedelta(hours=self.time_step)
 
-        print(len(negotiations))
-        self.csv_logger.save_log(datetime.datetime.now(), negotiations)
-        return "Symulacja zakończyła się"
+        return self.csv_logger.save_log(datetime.datetime.now(), negotiations)
